@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Kustom Weekly Production Report</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+  :root {
+    --red: #C8102E;
+    --dark: #111;
+    --card: #1e1e1e;
+    --card2: #252525;
+    --border: #2e2e2e;
+    --border2: #3a3a3a;
+    --text: #f2f2f2;
+    --muted: #777;
+    --yellow: #f0a030;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html { background: var(--dark); }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    color: var(--text);
+    background: var(--dark);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+  }
+
+  .page {
+    width: 100%;
+    max-width: 480px;
+    padding: 24px 16px 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* HEADER */
+  .header { display: flex; align-items: center; gap: 10px; }
+  .k-mark {
+    width: 38px; height: 38px;
+    background: var(--red);
+    clip-path: polygon(0 0, 100% 0, 100% 55%, 50% 100%, 0 55%);
+    flex-shrink: 0;
+  }
+  .brand-name { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 4px; }
+  .brand-sub { font-size: 10px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 1px; }
+
+  /* TITLE BAR */
+  .title-bar { background: var(--red); border-radius: 10px; padding: 13px 18px; }
+  .title-bar h1 { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2.5px; color: #fff; line-height: 1.1; }
+  .title-bar p { font-size: 12px; color: rgba(255,255,255,0.65); margin-top: 3px; }
+
+  /* SECTION */
+  .section { background: var(--card); border: 1.5px solid var(--border); border-radius: 14px; overflow: hidden; }
+  .section-header { background: var(--card2); border-bottom: 1.5px solid var(--border); padding: 12px 18px; }
+  .section-header h2 { font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 2px; color: var(--red); }
+  .section-body { padding: 16px 18px; display: flex; flex-direction: column; gap: 12px; }
+
+  /* FIELD */
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field label { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
+  .field input,
+  .field textarea {
+    background: #181818;
+    border: 1.5px solid var(--border2);
+    border-radius: 9px;
+    padding: 14px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text);
+    width: 100%;
+    transition: border-color 0.15s;
+    -webkit-appearance: none;
+  }
+  .field input:focus,
+  .field textarea:focus { outline: none; border-color: #555; }
+  .field input::placeholder,
+  .field textarea::placeholder { color: #3a3a3a; }
+  .field textarea { resize: vertical; min-height: 100px; line-height: 1.5; }
+
+  .voice-hint { font-size: 11px; color: var(--muted); margin-top: -4px; padding-left: 2px; }
+
+  /* LIST ITEMS */
+  .list-items { display: flex; flex-direction: column; gap: 8px; }
+  .list-item { display: flex; align-items: flex-start; gap: 10px; }
+  .list-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    color: var(--red);
+    padding-top: 14px;
+    flex-shrink: 0;
+    width: 20px;
+    text-align: right;
+  }
+  .list-item input {
+    flex: 1;
+    background: #181818;
+    border: 1.5px solid var(--border2);
+    border-radius: 9px;
+    padding: 14px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text);
+    transition: border-color 0.15s;
+    -webkit-appearance: none;
+  }
+  .list-item input:focus { outline: none; border-color: #555; }
+  .list-item input::placeholder { color: #3a3a3a; }
+
+  .btn-add-item {
+    background: transparent;
+    border: 1.5px dashed var(--border2);
+    border-radius: 9px;
+    padding: 12px;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.15s;
+    margin-top: 2px;
+  }
+  .btn-add-item:hover { border-color: var(--red); color: var(--text); }
+
+  /* SUBMIT */
+  .submit-section { display: flex; flex-direction: column; gap: 10px; }
+  .warning {
+    display: none;
+    background: #2a1a0a;
+    border: 1.5px solid #7a4010;
+    border-radius: 10px;
+    padding: 11px 14px;
+    font-size: 13px;
+    color: var(--yellow);
+    line-height: 1.4;
+  }
+  .warning.visible { display: block; }
+  .btn-submit {
+    background: var(--red);
+    border: none;
+    border-radius: 12px;
+    padding: 17px;
+    color: #fff;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 2.5px;
+    cursor: pointer;
+    width: 100%;
+    transition: opacity 0.15s;
+  }
+  .btn-submit:active { opacity: 0.8; }
+  .btn-reset {
+    background: transparent;
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 12px;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.15s;
+  }
+  .btn-reset:hover { border-color: #555; color: #aaa; }
+  .note-text { font-size: 12px; color: var(--muted); text-align: center; line-height: 1.5; }
+  .note-text strong { color: #aaa; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="k-mark"></div>
+    <div>
+      <div class="brand-name">KUSTOM</div>
+      <div class="brand-sub">Disaster Recovery &amp; Restoration Since 1968</div>
+    </div>
+  </div>
+
+  <div class="title-bar">
+    <h1>WEEKLY PRODUCTION REPORT</h1>
+    <p>Complete all sections and submit to load a pre-filled Outlook email</p>
+  </div>
+
+  <!-- PROJECT OVERVIEW -->
+  <div class="section">
+    <div class="section-header"><h2>Project Overview</h2></div>
+    <div class="section-body">
+      <div class="field">
+        <label>Submitted By</label>
+        <input type="text" id="submittedBy" placeholder="Your name" autocomplete="name" />
+      </div>
+      <div class="field">
+        <label>Job # / Project Name</label>
+        <input type="text" id="jobNum" placeholder="e.g. 26-04-999999" autocomplete="off" />
+      </div>
+      <div class="field">
+        <label>Week Ending</label>
+        <input type="text" id="weekEnding" placeholder="MM / DD / YYYY" autocomplete="off" />
+      </div>
+      <div class="field">
+        <label>Weekly Synopsis</label>
+        <textarea id="synopsis" placeholder="Brief summary of how the week went for this project..."></textarea>
+        <div class="voice-hint">💬 Tip: use your phone's voice-to-text mic for longer notes</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JOB STATUS -->
+  <div class="section">
+    <div class="section-header"><h2>Job Status</h2></div>
+    <div class="section-body">
+      <div class="field">
+        <label>Job Percentage Complete</label>
+        <input type="number" id="pctComplete" placeholder="e.g. 65" min="0" max="100" />
+      </div>
+      <div class="field">
+        <label>Funds Currently Due</label>
+        <input type="text" id="fundsDue" placeholder="e.g. $12,500.00" autocomplete="off" />
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPLETED THIS WEEK -->
+  <div class="section">
+    <div class="section-header"><h2>Completed Items This Week</h2></div>
+    <div class="section-body">
+      <div class="list-items" id="completedList"></div>
+      <button class="btn-add-item" onclick="addItem('completedList', 'completed')">+ Add Item</button>
+    </div>
+  </div>
+
+  <!-- PLANNED NEXT WEEK -->
+  <div class="section">
+    <div class="section-header"><h2>Planned For Next Week</h2></div>
+    <div class="section-body">
+      <div class="list-items" id="plannedList"></div>
+      <button class="btn-add-item" onclick="addItem('plannedList', 'planned')">+ Add Item</button>
+    </div>
+  </div>
+
+  <!-- ISSUES -->
+  <div class="section">
+    <div class="section-header"><h2>Identified Potential Issues or Concerns</h2></div>
+    <div class="section-body">
+      <div class="list-items" id="issuesList"></div>
+      <button class="btn-add-item" onclick="addItem('issuesList', 'issues')">+ Add Item</button>
+    </div>
+  </div>
+
+  <!-- RFI -->
+  <div class="section">
+    <div class="section-header"><h2>Request For Information from Client / Property Owner</h2></div>
+    <div class="section-body">
+      <div class="list-items" id="rfiList"></div>
+      <button class="btn-add-item" onclick="addItem('rfiList', 'rfi')">+ Add Item</button>
+    </div>
+  </div>
+
+  <!-- SUBMIT -->
+  <div class="submit-section">
+    <div class="warning" id="warning"></div>
+    <p class="note-text">Submitting will open Outlook pre-filled. <strong>You fill in the To: field before sending.</strong></p>
+    <button class="btn-submit" onclick="submitForm()">SUBMIT REPORT</button>
+    <button class="btn-reset" onclick="resetForm()">Reset Form</button>
+  </div>
+
+</div>
+<script>
+  const counts = { completed: 0, planned: 0, issues: 0, rfi: 0 };
+
+  // Auto-fill week ending to this Friday
+  const today = new Date();
+  const dayOfWeek = today.getDay();
+  const daysUntilFriday = (5 - dayOfWeek + 7) % 7 || 7;
+  const friday = new Date(today);
+  friday.setDate(today.getDate() + (dayOfWeek === 5 ? 0 : daysUntilFriday - 7 < 0 ? daysUntilFriday : daysUntilFriday - 7));
+  // Just use today if it's Friday, else last Friday
+  const lastFriday = new Date(today);
+  lastFriday.setDate(today.getDate() - ((dayOfWeek + 1) % 7 + 1) % 7);
+  const displayDate = dayOfWeek === 5 ? today : lastFriday;
+  document.getElementById('weekEnding').value =
+    String(displayDate.getMonth()+1).padStart(2,'0') + ' / ' +
+    String(displayDate.getDate()).padStart(2,'0') + ' / ' +
+    displayDate.getFullYear();
+
+  function addItem(listId, key) {
+    counts[key]++;
+    const num = counts[key];
+    const list = document.getElementById(listId);
+    const row = document.createElement('div');
+    row.className = 'list-item';
+    row.id = listId + '-row-' + num;
+    row.innerHTML = `
+      <div class="list-num">${num}</div>
+      <input type="text" id="${key}-${num}" placeholder="Enter item..." autocomplete="off" />
+    `;
+    list.appendChild(row);
+  }
+
+  function getList(key, label) {
+    const items = [];
+    for (let i = 1; i <= counts[key]; i++) {
+      const el = document.getElementById(key + '-' + i);
+      if (el && el.value.trim()) items.push(el.value.trim());
+    }
+    if (!items.length) return label + '\n  (none entered)\n\n';
+    return label + '\n' + items.map((item, i) => `  ${i+1}. ${item}`).join('\n') + '\n\n';
+  }
+
+  function v(id) {
+    const el = document.getElementById(id);
+    return el ? el.value.trim() : '';
+  }
+
+  function submitForm() {
+    const warn = document.getElementById('warning');
+    const issues = [];
+    if (!v('submittedBy')) issues.push('Submitted By is required');
+    if (!v('jobNum')) issues.push('Job # is required');
+    if (issues.length) {
+      warn.textContent = '⚠ ' + issues.join(' · ');
+      warn.classList.add('visible');
+      return;
+    }
+    warn.classList.remove('visible');
+
+    const pct = v('pctComplete');
+    const subject = encodeURIComponent('Weekly Production Report - ' + v('jobNum') + ' - Week Ending ' + v('weekEnding'));
+
+    const body = encodeURIComponent(
+      'WEEKLY PRODUCTION REPORT\n' +
+      '=====================================\n' +
+      'Submitted By:  ' + v('submittedBy') + '\n' +
+      'Job #:         ' + v('jobNum') + '\n' +
+      'Week Ending:   ' + v('weekEnding') + '\n\n' +
+
+      'PROJECT OVERVIEW\n' +
+      '-------------------------------------\n' +
+      v('synopsis') + '\n\n' +
+
+      'JOB STATUS\n' +
+      '-------------------------------------\n' +
+      'Job Percentage Complete: ' + (pct ? pct + '%' : 'Not entered') + '\n' +
+      'Funds Currently Due:     ' + v('fundsDue') + '\n\n' +
+
+      getList('completed', 'COMPLETED ITEMS THIS WEEK') +
+      getList('planned',   'PLANNED FOR NEXT WEEK') +
+      getList('issues',    'IDENTIFIED POTENTIAL ISSUES OR CONCERNS') +
+      getList('rfi',       'REQUEST FOR INFORMATION FROM CLIENT / PROPERTY OWNER') +
+
+      '=====================================\n' +
+      'Submitted via Kustom Weekly Production Report'
+    );
+
+    window.location.href = 'mailto:?subject=' + subject + '&body=' + body;
+  }
+
+  function resetForm() {
+    document.querySelectorAll('input, textarea').forEach(el => el.value = '');
+    ['completedList','plannedList','issuesList','rfiList'].forEach(id => {
+      document.getElementById(id).innerHTML = '';
+    });
+    counts.completed = 0; counts.planned = 0; counts.issues = 0; counts.rfi = 0;
+    document.getElementById('warning').classList.remove('visible');
+  }
+
+  // Seed each list with 3 starter items
+  ['completed','planned','issues','rfi'].forEach(key => {
+    const listId = key + 'List';
+    addItem(listId, key);
+    addItem(listId, key);
+    addItem(listId, key);
+  });
+</script>
+</body>
+</html>
