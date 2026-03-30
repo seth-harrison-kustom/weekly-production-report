@@ -337,7 +337,7 @@
     warn.classList.remove('visible');
 
     const pct = v('pctComplete');
-    const subject = encodeURIComponent('Weekly Production Report - ' + v('jobNum') + ' - Week Ending ' + v('weekEnding'));
+    const subject = encodeURIComponent(v('jobNum') + ':');
 
     const body = encodeURIComponent(
       'WEEKLY PRODUCTION REPORT\n' +
