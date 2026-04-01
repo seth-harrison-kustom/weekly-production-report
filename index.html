@@ -9,14 +9,15 @@
 
   :root {
     --red: #C8102E;
-    --dark: #111;
-    --card: #1e1e1e;
-    --card2: #252525;
-    --border: #2e2e2e;
-    --border2: #3a3a3a;
-    --text: #f2f2f2;
-    --muted: #777;
-    --yellow: #f0a030;
+    --dark: #f0f0f0;
+    --card: #ffffff;
+    --card2: #f5f5f5;
+    --border: #ddd;
+    --border2: #ccc;
+    --text: #1a1a1a;
+    --muted: #888;
+    --yellow: #b35c00;
+    --green: #1a7a3a;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -47,16 +48,16 @@
     clip-path: polygon(0 0, 100% 0, 100% 55%, 50% 100%, 0 55%);
     flex-shrink: 0;
   }
-  .brand-name { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 4px; }
+  .brand-name { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 4px; color: #1a1a1a; }
   .brand-sub { font-size: 10px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 1px; }
 
   /* TITLE BAR */
   .title-bar { background: var(--red); border-radius: 10px; padding: 13px 18px; }
   .title-bar h1 { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2.5px; color: #fff; line-height: 1.1; }
-  .title-bar p { font-size: 12px; color: rgba(255,255,255,0.65); margin-top: 3px; }
+  .title-bar p { font-size: 12px; color: rgba(255,255,255,0.75); margin-top: 3px; }
 
   /* SECTION */
-  .section { background: var(--card); border: 1.5px solid var(--border); border-radius: 14px; overflow: hidden; }
+  .section { background: var(--card); border: 1.5px solid var(--border); border-radius: 14px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
   .section-header { background: var(--card2); border-bottom: 1.5px solid var(--border); padding: 12px 18px; }
   .section-header h2 { font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 2px; color: var(--red); }
   .section-body { padding: 16px 18px; display: flex; flex-direction: column; gap: 12px; }
@@ -66,7 +67,7 @@
   .field label { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
   .field input,
   .field textarea {
-    background: #181818;
+    background: #fff;
     border: 1.5px solid var(--border2);
     border-radius: 9px;
     padding: 14px 16px;
@@ -79,9 +80,9 @@
     -webkit-appearance: none;
   }
   .field input:focus,
-  .field textarea:focus { outline: none; border-color: #555; }
+  .field textarea:focus { outline: none; border-color: var(--red); }
   .field input::placeholder,
-  .field textarea::placeholder { color: #3a3a3a; }
+  .field textarea::placeholder { color: #bbb; }
   .field textarea { resize: vertical; min-height: 100px; line-height: 1.5; }
 
   .voice-hint { font-size: 11px; color: var(--muted); margin-top: -4px; padding-left: 2px; }
@@ -100,7 +101,7 @@
   }
   .list-item input {
     flex: 1;
-    background: #181818;
+    background: #fff;
     border: 1.5px solid var(--border2);
     border-radius: 9px;
     padding: 14px 16px;
@@ -111,8 +112,8 @@
     transition: border-color 0.15s;
     -webkit-appearance: none;
   }
-  .list-item input:focus { outline: none; border-color: #555; }
-  .list-item input::placeholder { color: #3a3a3a; }
+  .list-item input:focus { outline: none; border-color: var(--red); }
+  .list-item input::placeholder { color: #bbb; }
 
   .btn-add-item {
     background: transparent;
@@ -128,14 +129,14 @@
     transition: all 0.15s;
     margin-top: 2px;
   }
-  .btn-add-item:hover { border-color: var(--red); color: var(--text); }
+  .btn-add-item:hover { border-color: var(--red); color: var(--red); }
 
   /* SUBMIT */
   .submit-section { display: flex; flex-direction: column; gap: 10px; }
   .warning {
     display: none;
-    background: #2a1a0a;
-    border: 1.5px solid #7a4010;
+    background: #fff3e0;
+    border: 1.5px solid #e08000;
     border-radius: 10px;
     padding: 11px 14px;
     font-size: 13px;
@@ -159,7 +160,7 @@
   .btn-submit:active { opacity: 0.8; }
   .btn-reset {
     background: transparent;
-    border: 1.5px solid var(--border);
+    border: 1.5px solid var(--border2);
     border-radius: 12px;
     padding: 12px;
     color: var(--muted);
@@ -171,9 +172,9 @@
     width: 100%;
     transition: all 0.15s;
   }
-  .btn-reset:hover { border-color: #555; color: #aaa; }
+  .btn-reset:hover { border-color: #999; color: #555; }
   .note-text { font-size: 12px; color: var(--muted); text-align: center; line-height: 1.5; }
-  .note-text strong { color: #aaa; }
+  .note-text strong { color: #444; }
 </style>
 </head>
 <body>
