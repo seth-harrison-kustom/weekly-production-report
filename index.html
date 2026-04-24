@@ -40,7 +40,6 @@
     gap: 20px;
   }
 
-  /* HEADER */
   .header { display: flex; align-items: center; gap: 10px; }
   .k-mark {
     width: 38px; height: 38px;
@@ -51,18 +50,15 @@
   .brand-name { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 4px; color: #1a1a1a; }
   .brand-sub { font-size: 10px; color: var(--muted); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 1px; }
 
-  /* TITLE BAR */
   .title-bar { background: var(--red); border-radius: 10px; padding: 13px 18px; }
   .title-bar h1 { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2.5px; color: #fff; line-height: 1.1; }
   .title-bar p { font-size: 12px; color: rgba(255,255,255,0.75); margin-top: 3px; }
 
-  /* SECTION */
   .section { background: var(--card); border: 1.5px solid var(--border); border-radius: 14px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
   .section-header { background: var(--card2); border-bottom: 1.5px solid var(--border); padding: 12px 18px; }
   .section-header h2 { font-family: 'Bebas Neue', sans-serif; font-size: 16px; letter-spacing: 2px; color: var(--red); }
   .section-body { padding: 16px 18px; display: flex; flex-direction: column; gap: 12px; }
 
-  /* FIELD */
   .field { display: flex; flex-direction: column; gap: 5px; }
   .field label { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); }
   .field input,
@@ -87,7 +83,6 @@
 
   .voice-hint { font-size: 11px; color: var(--muted); margin-top: -4px; padding-left: 2px; }
 
-  /* LIST ITEMS */
   .list-items { display: flex; flex-direction: column; gap: 8px; }
   .list-item { display: flex; align-items: flex-start; gap: 10px; }
   .list-num {
@@ -131,7 +126,6 @@
   }
   .btn-add-item:hover { border-color: var(--red); color: var(--red); }
 
-  /* SUBMIT */
   .submit-section { display: flex; flex-direction: column; gap: 10px; }
   .warning {
     display: none;
@@ -180,7 +174,6 @@
 <body>
 <div class="page">
 
-  <!-- HEADER -->
   <div class="header">
     <div class="k-mark"></div>
     <div>
@@ -194,7 +187,6 @@
     <p>Complete all sections and submit to load a pre-filled Outlook email</p>
   </div>
 
-  <!-- PROJECT OVERVIEW -->
   <div class="section">
     <div class="section-header"><h2>Project Overview</h2></div>
     <div class="section-body">
@@ -222,10 +214,14 @@
     </div>
   </div>
 
-  <!-- JOB STATUS -->
   <div class="section">
     <div class="section-header"><h2>Job Status</h2></div>
     <div class="section-body">
+      <div class="field">
+        <label>Target Completion Date</label>
+        <input type="text" id="tcd" placeholder="MM / DD / YYYY" autocomplete="off" />
+        <div class="voice-hint">Pull directly from DASH TCD. If it needs to be changed, discuss with GM before updating.</div>
+      </div>
       <div class="field">
         <label>Job Percentage Complete</label>
         <input type="number" id="pctComplete" placeholder="e.g. 65" min="0" max="100" />
@@ -237,7 +233,6 @@
     </div>
   </div>
 
-  <!-- COMPLETED THIS WEEK -->
   <div class="section">
     <div class="section-header"><h2>Completed Items This Week</h2></div>
     <div class="section-body">
@@ -246,7 +241,6 @@
     </div>
   </div>
 
-  <!-- PLANNED NEXT WEEK -->
   <div class="section">
     <div class="section-header"><h2>Planned For Next Week</h2></div>
     <div class="section-body">
@@ -255,7 +249,6 @@
     </div>
   </div>
 
-  <!-- ISSUES -->
   <div class="section">
     <div class="section-header"><h2>Identified Potential Issues or Concerns</h2></div>
     <div class="section-body">
@@ -264,7 +257,6 @@
     </div>
   </div>
 
-  <!-- RFI -->
   <div class="section">
     <div class="section-header"><h2>Request For Information from Client / Property Owner</h2></div>
     <div class="section-body">
@@ -273,7 +265,6 @@
     </div>
   </div>
 
-  <!-- SUBMIT -->
   <div class="submit-section">
     <div class="warning" id="warning"></div>
     <p class="note-text">Submitting will open Outlook pre-filled. <strong>You fill in the To: field before sending.</strong></p>
@@ -285,13 +276,8 @@
 <script>
   const counts = { completed: 0, planned: 0, issues: 0, rfi: 0 };
 
-  // Auto-fill week ending to this Friday
   const today = new Date();
   const dayOfWeek = today.getDay();
-  const daysUntilFriday = (5 - dayOfWeek + 7) % 7 || 7;
-  const friday = new Date(today);
-  friday.setDate(today.getDate() + (dayOfWeek === 5 ? 0 : daysUntilFriday - 7 < 0 ? daysUntilFriday : daysUntilFriday - 7));
-  // Just use today if it's Friday, else last Friday
   const lastFriday = new Date(today);
   lastFriday.setDate(today.getDate() - ((dayOfWeek + 1) % 7 + 1) % 7);
   const displayDate = dayOfWeek === 5 ? today : lastFriday;
@@ -358,6 +344,7 @@
 
       'JOB STATUS\n' +
       '-------------------------------------\n' +
+      'Target Completion Date:  ' + v('tcd') + '\n' +
       'Job Percentage Complete: ' + (pct ? pct + '%' : 'Not entered') + '\n' +
       'Funds Currently Due:     ' + v('fundsDue') + '\n\n' +
 
@@ -382,7 +369,6 @@
     document.getElementById('warning').classList.remove('visible');
   }
 
-  // Seed each list with 3 starter items
   ['completed','planned','issues','rfi'].forEach(key => {
     const listId = key + 'List';
     addItem(listId, key);
